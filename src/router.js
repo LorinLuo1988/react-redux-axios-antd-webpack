@@ -5,7 +5,7 @@ const wrapperComponent = Component => (
 )
 
 // 案件管理
-const Home = wrapperComponent(() => import('@/containers/Home.tsx'))
+const Home = wrapperComponent(() => import('@/containers/Home.jsx'))
 
 const routerFactory = () => ({
   path: '/',

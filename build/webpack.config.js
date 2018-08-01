@@ -13,6 +13,13 @@ const SRC_PATH = path.resolve(ROOT_PATH, 'src')
 const DEV_API_ROOT_PATH = path.resolve(ROOT_PATH, 'config/dev-api-root.js')
 
 const devApiRootFileExist = utils.fsExistsSync(DEV_API_ROOT_PATH)
+
+// 如果沒有dev-api-root.js，则新建该文件
+if (!devApiRootFileExist) {
+  const devApiRootContent = `const DEV_API_ROOT = 'http://127.0.0.1:8080'\n\nmodule.exports = DEV_API_ROOT`
+  fs.writeFileSync(DEV_API_ROOT_PATH, devApiRootContent, {encoding:'utf-8'})
+}
+
 const webpackNodeEnvConfig = require(`./webpack.${NODE_ENV === 'development' ? 'dev' : 'prod'}.config.js`)
 const bundleConfig = require(`../dist/dll/${NODE_ENV}/bundle-config.json`)
 
@@ -46,8 +53,7 @@ const plugins = [
     vendorCssName: `${NODE_ENV}/${bundleConfig.vendor.css}` // 把带hash的dll css插入到html中
 	}),
   happypackFactory('jsx?.eslint'),
-  happypackFactory('jsx?'),
-  happypackFactory('tsx?'),
+  happypackFactory('jsx?')
 ]
 
 // 是否要启动bundle分析
@@ -57,7 +63,7 @@ if (process.env.npm_config_analyzer) {
 
 let commonConfig = {
 	entry: {
-		index: ['babel-polyfill', path.resolve(SRC_PATH, 'index.tsx')]
+		index: ['babel-polyfill', path.resolve(SRC_PATH, 'index.jsx')]
 	},
 	output: {
 		path: path.resolve(ROOT_PATH, 'dist'),
@@ -73,20 +79,9 @@ let commonConfig = {
 				use: 'happypack/loader?id=jsx?.eslint'
 			},
       {
-        enforce: 'pre', //防止eslint在代码检查前，代码被其他loader修改
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: 'happypack/loader?id=jsx?.eslint'
-      },
-      {
 				test: /\.jsx?$/,
 				exclude: /node_modules/,
 				use: 'happypack/loader?id=jsx?'
-      },
-      {
-        test: /\.tsx?$/,
-        exclude: /node_modules/,
-        use: 'happypack/loader?id=tsx?'
       },
 			{
 				test: /\.(png|jpe?g|gif|ico)(\?.*)?$/,
@@ -107,7 +102,7 @@ let commonConfig = {
 	},
 	plugins,
 	resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx', '.less', '.css', '.json'],
+    extensions: ['.js', '.jsx', '.less', '.css', '.json'],
 		alias: {
 			'@': SRC_PATH,
 			'@root': ROOT_PATH,
@@ -123,12 +118,6 @@ let commonConfig = {
       '@decorator': path.resolve(SRC_PATH, 'decorator')
 		}
 	}
-}
-
-// 如果沒有dev-api-root.js，则新建该文件
-if (!devApiRootFileExist) {
-	const devApiRootContent = `const DEV_API_ROOT = 'http://127.0.0.1:8080'\n\nmodule.exports = DEV_API_ROOT`
-	fs.writeFileSync(DEV_API_ROOT_PATH, devApiRootContent, {encoding:'utf-8'})
 }
 
 module.exports = webpackMerge(
