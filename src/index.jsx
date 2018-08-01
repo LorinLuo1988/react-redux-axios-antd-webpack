@@ -42,3 +42,8 @@ if (process.env.ENV === 'mock') {
 } else {
   renderApp()
 }
+
+// react热更新
+if (module.hot) {
+  module.hot.accept()
+}

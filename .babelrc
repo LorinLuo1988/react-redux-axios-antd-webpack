@@ -3,6 +3,7 @@
 	"plugins":[
 		"transform-class-properties",
 		"syntax-dynamic-import", // 允许babel动态imports
+		"react-hot-loader/babel",
 		"transform-decorators-legacy"
 	],
   "env": {
