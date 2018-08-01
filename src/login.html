@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>律所案件系统</title>
+  <% if (process.env.NODE_ENV === "production") { %>
+  <link rel="stylesheet" href="/dll/<%= htmlWebpackPlugin.options.vendorCssName %>">
+  <link rel="stylesheet" href="/dll/<%= htmlWebpackPlugin.options.antdCssName %>">
+  <% } %>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="/dll/<%= htmlWebpackPlugin.options.vendorBundleName %>"></script>
+  <script src="/dll/<%= htmlWebpackPlugin.options.momentBundleName %>"></script>
+  <script src="/dll/<%= htmlWebpackPlugin.options.antdBundleName %>"></script>
+  <script src="/dll/<%= htmlWebpackPlugin.options.reactBundleName %>"></script>
+  <script src="/dll/<%= htmlWebpackPlugin.options.reduxBundleName %>"></script>
+  <% if (process.env.NODE_ENV === "development") { %>
+  <script src="/dll/<%= htmlWebpackPlugin.options.devWebpackBundleName %>"></script>
+  <% } %>
+</body>
+</html>

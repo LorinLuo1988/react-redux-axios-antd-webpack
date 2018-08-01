@@ -42,6 +42,7 @@ const plugins = [
 	new HtmlWebpackPlugin({
 		favicon: path.resolve(SRC_PATH, 'favicon.ico'),
     template: path.resolve(SRC_PATH, 'index.html'),
+    filename: 'index.html',
     chunks: ['index'],
     vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
     momentBundleName: `${NODE_ENV}/${bundleConfig.moment.js}`, // 把带hash的dll js插入到html中
@@ -52,6 +53,20 @@ const plugins = [
     antdCssName: `${NODE_ENV}/${bundleConfig.antd.css}`, // 把带hash的dll css插入到html中
     vendorCssName: `${NODE_ENV}/${bundleConfig.vendor.css}` // 把带hash的dll css插入到html中
 	}),
+  new HtmlWebpackPlugin({
+    favicon: path.resolve(SRC_PATH, 'favicon.ico'),
+    template: path.resolve(SRC_PATH, 'login.html'),
+    filename: 'login.html',
+    chunks: ['login'],
+    vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
+    momentBundleName: `${NODE_ENV}/${bundleConfig.moment.js}`, // 把带hash的dll js插入到html中
+    antdBundleName: `${NODE_ENV}/${bundleConfig.antd.js}`, // 把带hash的dll js插入到html中
+    reactBundleName: `${NODE_ENV}/${bundleConfig.react.js}`, // 把带hash的dll js插入到html中
+    reduxBundleName: `${NODE_ENV}/${bundleConfig.redux.js}`, // 把带hash的dll js插入到html中
+    devWebpackBundleName: `${NODE_ENV}/${bundleConfig.devWebpack ? bundleConfig.devWebpack.js : ''}`, // 把带hash的dll js插入到html中
+    antdCssName: `${NODE_ENV}/${bundleConfig.antd.css}`, // 把带hash的dll css插入到html中
+    vendorCssName: `${NODE_ENV}/${bundleConfig.vendor.css}` // 把带hash的dll css插入到html中
+  }),
   happypackFactory('jsx?.eslint'),
   happypackFactory('jsx?')
 ]
@@ -63,7 +78,8 @@ if (process.env.npm_config_analyzer) {
 
 let commonConfig = {
 	entry: {
-		index: ['babel-polyfill', path.resolve(SRC_PATH, 'index.jsx')]
+    index: ['babel-polyfill', path.resolve(SRC_PATH, 'index.jsx')],
+		login: ['babel-polyfill', path.resolve(SRC_PATH, 'login.jsx')]
 	},
 	output: {
 		path: path.resolve(ROOT_PATH, 'dist'),
