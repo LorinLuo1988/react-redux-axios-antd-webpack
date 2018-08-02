@@ -8,9 +8,6 @@ react+redux+axios+antd+webpack
 ## Run
 ### 参数
 1. --PORT: wepack-dev-server端口号
-
-2. --MOCK_PORT: mock代理服务器端口号
-
 3. --analyzer: 启动bundle分析
 
 ### Development
@@ -22,9 +19,7 @@ react+redux+axios+antd+webpack
 
 2. npm run dev:mock
 
-3. 启动mock服务器 npm run server:mock
-
-4. 添加mock数据，请在mock/mock-data文件夹下，按照路由层级添加mock文件
+4. 添加mock数据，请在src/mock文件夹下，按照路由层级添加mock文件
 
 ### Test(Build)
 1. npm run dll:prod(只在第一次或者第三方包有更新时才用运行，第三方包参考/build/webpack.dll.config.js)
