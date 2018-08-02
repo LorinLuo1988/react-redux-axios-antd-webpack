@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as PropTypes from 'prop-types'
 import MainLayout from './layout/Main'
@@ -11,8 +11,18 @@ import { commonService } from '@services'
 import { loadingDecorator } from '@decorator'
 import { NOT_NEED_AUTH_ROUTE_PATHS } from '@constants'
 
+// 迷路
 const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@components/MissWay')))
+
+// 登陆
 const Login = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./Login')))
+
+// 消费记录
+const ConsumeRecord = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./ConsumeRecord')))
+
+// 任务管理
+const TaskManage = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./TaskManage')))
+
 const mapStateToProps = state => {
   return {
     selectedKeys: state.commonReducer.selectedKeys,
@@ -99,9 +109,20 @@ class Root extends Component {
               <Route path="/">
                 <Layout userName={userName}>
                   <Switch>
-                    <RouteWrapper routes={router.children || []}></RouteWrapper>
-                    <Redirect from='//' to='/home'/>
-                    <Route component={MissWay}></Route>
+                    <Route
+                      path="/consume-record"
+                      exact={true}
+                      strict={true}
+                      component={ConsumeRecord}
+                    />
+                    <Route
+                      path="/task-manage"
+                      exact={true}
+                      strict={true}
+                      component={TaskManage}
+                    />
+                    <RouteWrapper routes={router.children || []} />
+                    <Route component={MissWay} />
                   </Switch>
                 </Layout>
               </Route>

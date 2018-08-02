@@ -4,7 +4,7 @@ import { PageHeader } from '@components/common'
 const Home = () => {
   return (
     <div>
-      <PageHeader title="主頁" />
+      <PageHeader title="概况" />
     </div>
   )
 }

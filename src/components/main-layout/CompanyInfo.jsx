@@ -5,6 +5,7 @@ const CompanyInfo = ({ className, companyAvator }) => {
   return (
     <div className={className}>
       <img className="avator" src={companyAvator} alt=""/>
+      Chatbots智能语音机器人
     </div>
   )
 }

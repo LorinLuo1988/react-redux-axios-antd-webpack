@@ -1,9 +1,9 @@
 import React from 'react'
-import { Route, Redirect, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const RouteWrapper = ({ routes = [] }) => {
-  const Routes = routes.map(route => (
+  const routers = routes.map(route => (
     <Route
       key={route.path}
       path={route.path}
@@ -12,15 +12,14 @@ const RouteWrapper = ({ routes = [] }) => {
           <route.component routes={route.children} {...props} />
         )
       }
-      exact={false}
+      exact={true}
       strict={true}>
     </Route>
   ))
 
   return routes.length ? (
     <Switch>
-      {Routes}
-      <Redirect to={routes[0].path}/>
+      {routers}
     </Switch>
   ) : null
 }
