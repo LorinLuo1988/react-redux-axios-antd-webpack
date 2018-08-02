@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as PropTypes from 'prop-types'
+import { autobind } from 'core-decorators'
 import MainLayout from './layout/Main'
 import { PageRouterSwitchProgress, AsyncLoadComponent } from '@/components/higer-components'
 import { RouteWrapper } from '@/components/common'
@@ -35,6 +36,7 @@ const mapActionToProps = dispatch => ({
 })
 
 @loadingDecorator
+@autobind
 class Root extends Component {
   static propTypes = {
     updateRouterMenuAction: PropTypes.func.isRequired,
@@ -48,12 +50,6 @@ class Root extends Component {
       loadingUserInfo: false,
       userName: '' // 登陆用户名
     }
-
-    this.swicthLayout = this.swicthLayout.bind(this)
-    this.handleRouterChange = this.handleRouterChange.bind(this)
-    this.fetchUserInfo = this.fetchUserInfo.bind(this)
-    this.toggleLoading = this.toggleLoading.bind(this)
-    this.listenerRouterChange = this.listenerRouterChange.bind(this)
   }
   swicthLayout (Layout) {
     this.setState({Layout})
