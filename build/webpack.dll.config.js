@@ -4,6 +4,7 @@ const AssetsPlugin = require('assets-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const happypackFactory = require('./happypack')
 
 const ROOT_PATH = path.resolve(__dirname, '../')
@@ -91,26 +92,26 @@ if (NODE_ENV === 'production') {
   rules.push(
     {
       test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        use: 'happypack/loader?id=css.production',
-        fallback: 'style-loader'
-      })  
+      use: [
+        MiniCssExtractPlugin.loader,
+        'happypack/loader?id=css.production' 
+      ]
     },
     {
       test: /\.less$/,
       include: path.resolve(ROOT_PATH, 'node_modules/antd'),
-      use: ExtractTextPlugin.extract({
-        use: 'happypack/loader?id=less.production.antd',
-        fallback: 'style-loader'
-      })
+      use: [
+        MiniCssExtractPlugin.loader,
+        'happypack/loader?id=less.production.antd'
+      ]
     }
   )
   plugins.push(
     happypackFactory('css.production'),
     happypackFactory('less.production.antd'),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: '[name].[chunkHash].css',
-      allChunks: true //当有多个js文件时需要将此项设置为true
+      chunkFilename: '[name].[chunkHash].css'
     })
   )
 } else {

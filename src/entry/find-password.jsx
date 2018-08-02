@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import axios from 'axios'
-import Root from '@/containers/Root'
+import FindPassword from '@/containers/FindPassword'
 import store from '@/store'
 import { API_ROOT } from '@constants'
 
@@ -26,7 +26,7 @@ const renderApp = () => {
   render(
     <Provider store={store}>
       <LocaleProvider locale={zh_CN}>
-        <Root></Root>
+        <FindPassword />
       </LocaleProvider>
     </Provider>,
     document.getElementById('app')
@@ -36,7 +36,7 @@ const renderApp = () => {
 // 按需加载mock
 if (process.env.ENV === 'mock') {
   require.ensure([], require => {
-    require('./mock')
+    require('@mock')
     renderApp()
   })
 } else {

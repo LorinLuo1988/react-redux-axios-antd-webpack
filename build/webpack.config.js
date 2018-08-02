@@ -41,7 +41,7 @@ const plugins = [
   }),
 	new HtmlWebpackPlugin({
 		favicon: path.resolve(SRC_PATH, 'favicon.ico'),
-    template: path.resolve(SRC_PATH, 'index.html'),
+    template: path.resolve(SRC_PATH, 'html/index.html'),
     filename: 'index.html',
     chunks: ['index'],
     vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
@@ -55,9 +55,23 @@ const plugins = [
 	}),
   new HtmlWebpackPlugin({
     favicon: path.resolve(SRC_PATH, 'favicon.ico'),
-    template: path.resolve(SRC_PATH, 'login.html'),
+    template: path.resolve(SRC_PATH, 'html/login.html'),
     filename: 'login.html',
     chunks: ['login'],
+    vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
+    momentBundleName: `${NODE_ENV}/${bundleConfig.moment.js}`, // 把带hash的dll js插入到html中
+    antdBundleName: `${NODE_ENV}/${bundleConfig.antd.js}`, // 把带hash的dll js插入到html中
+    reactBundleName: `${NODE_ENV}/${bundleConfig.react.js}`, // 把带hash的dll js插入到html中
+    reduxBundleName: `${NODE_ENV}/${bundleConfig.redux.js}`, // 把带hash的dll js插入到html中
+    devWebpackBundleName: `${NODE_ENV}/${bundleConfig.devWebpack ? bundleConfig.devWebpack.js : ''}`, // 把带hash的dll js插入到html中
+    antdCssName: `${NODE_ENV}/${bundleConfig.antd.css}`, // 把带hash的dll css插入到html中
+    vendorCssName: `${NODE_ENV}/${bundleConfig.vendor.css}` // 把带hash的dll css插入到html中
+  }),
+  new HtmlWebpackPlugin({
+    favicon: path.resolve(SRC_PATH, 'favicon.ico'),
+    template: path.resolve(SRC_PATH, 'html/find-password.html'),
+    filename: 'find-password.html',
+    chunks: ['findPassword'],
     vendorBundleName: `${NODE_ENV}/${bundleConfig.vendor.js}`, // 把带hash的dll js插入到html中
     momentBundleName: `${NODE_ENV}/${bundleConfig.moment.js}`, // 把带hash的dll js插入到html中
     antdBundleName: `${NODE_ENV}/${bundleConfig.antd.js}`, // 把带hash的dll js插入到html中
@@ -78,8 +92,9 @@ if (process.env.npm_config_analyzer) {
 
 let commonConfig = {
 	entry: {
-    index: ['babel-polyfill', path.resolve(SRC_PATH, 'index.jsx')],
-		login: ['babel-polyfill', path.resolve(SRC_PATH, 'login.jsx')]
+    index: ['babel-polyfill', path.resolve(SRC_PATH, 'entry/index.jsx')],
+    login: ['babel-polyfill', path.resolve(SRC_PATH, 'entry/login.jsx')],
+		findPassword: ['babel-polyfill', path.resolve(SRC_PATH, 'entry/find-password.jsx')]
 	},
 	output: {
 		path: path.resolve(ROOT_PATH, 'dist'),
@@ -131,7 +146,8 @@ let commonConfig = {
 			'@imgs': path.resolve(SRC_PATH, 'imgs'),
       '@redux': path.resolve(SRC_PATH, 'redux'),
       '@config': path.resolve(SRC_PATH, 'config'),
-      '@decorator': path.resolve(SRC_PATH, 'decorator')
+      '@decorator': path.resolve(SRC_PATH, 'decorator'),
+      '@mock': path.resolve(SRC_PATH, 'mock')
 		}
 	}
 }

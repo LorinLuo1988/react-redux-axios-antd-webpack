@@ -58,7 +58,7 @@ axios.interceptors.response.use(
     if (res.code === 401) {
       clearLocalStorage('token')
       // 退出登陆时，由于用户可能更改了权限，因此需要刷新应用，以便重新设置路由
-      return window.location.href = '/login'
+      return window.location = '/login.html'
     }
 
     if (!data.ok) {
@@ -94,7 +94,7 @@ axios.interceptors.response.use(
     // 未登录或超时，跳转到登陆页面
     if (response && response.status === 401) {
       clearLocalStorage('token')
-      return window.location.href = '/login'
+      return window.location = '/login.html'
     }
 
     return Promise.reject(err)

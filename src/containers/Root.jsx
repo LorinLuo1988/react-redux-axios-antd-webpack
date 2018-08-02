@@ -14,14 +14,14 @@ import { NOT_NEED_AUTH_ROUTE_PATHS } from '@constants'
 // 迷路
 const MissWay = PageRouterSwitchProgress(AsyncLoadComponent(() => import('@components/MissWay')))
 
-// 登陆
-const Login = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./Login')))
-
 // 消费记录
 const ConsumeRecord = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./ConsumeRecord')))
 
 // 任务管理
 const TaskManage = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./TaskManage')))
+
+// 呼叫任务详情
+const CallTaskDetail = PageRouterSwitchProgress(AsyncLoadComponent(() => import('./CallTaskDetail')))
 
 const mapStateToProps = state => {
   return {
@@ -53,6 +53,7 @@ class Root extends Component {
     this.handleRouterChange = this.handleRouterChange.bind(this)
     this.fetchUserInfo = this.fetchUserInfo.bind(this)
     this.toggleLoading = this.toggleLoading.bind(this)
+    this.listenerRouterChange = this.listenerRouterChange.bind(this)
   }
   swicthLayout (Layout) {
     this.setState({Layout})
@@ -80,52 +81,70 @@ class Root extends Component {
       this.setState({ userName: data.name })
     }).finally(() => this.toggleLoading(false, 'loadingUserInfo'))
   }
+  listenerRouterChange () {
+    if (this.isListenerRouterChange) {
+      return false
+    }
+
+    if (!getLocalStorage('token')) {
+      window.location = '/login.html'
+    }
+
+    if (window.$history) {
+      this.updateRouterMenu()
+      window.$history.listen(this.handleRouterChange)
+      this.isListenerRouterChange = true
+    }
+  }
+  componentDidUpdate () {
+    this.listenerRouterChange()
+  }
   componentDidMount () {
     const pathname = window.location.pathname
 
     if (!NOT_NEED_AUTH_ROUTE_PATHS.includes(pathname)) {
       this.fetchUserInfo() 
     }
-    
-    setTimeout(() => {
-      if (!getLocalStorage('token')) {
-        window.$history && window.$history.push('/login')
-      }
-      
-      this.updateRouterMenu()
-      window.$history && window.$history.listen(this.handleRouterChange)
-    }, 0)
+
+    this.listenerRouterChange()
   }
   render () {
-    const { Layout, userName, loadingUserInfo } = this.state
+    let { Layout, userName, loadingUserInfo } = this.state
     const router = this.props.router
-    
+
     return (
       <Router>
         <Switch>
-          <Route path="/login" component={Login}></Route>
           {
             loadingUserInfo ? null : (
-              <Route path="/">
-                <Layout userName={userName}>
-                  <Switch>
-                    <Route
-                      path="/consume-record"
-                      exact={true}
-                      strict={true}
-                      component={ConsumeRecord}
-                    />
-                    <Route
-                      path="/task-manage"
-                      exact={true}
-                      strict={true}
-                      component={TaskManage}
-                    />
-                    <RouteWrapper routes={router.children || []} />
-                    <Route component={MissWay} />
-                  </Switch>
-                </Layout>
-              </Route>
+              <React.Fragment>
+                <Route path="/">
+                  <Layout userName={userName}>
+                    <Switch>
+                      <Route
+                        path="/consume-record"
+                        exact={true}
+                        strict={true}
+                        component={ConsumeRecord}
+                      />
+                      <Route
+                        path="/task-manage"
+                        exact={true}
+                        strict={true}
+                        component={TaskManage}
+                      />
+                      <Route
+                        path="/call-task/detail"
+                        exact={true}
+                        strict={true}
+                        component={CallTaskDetail}
+                      />
+                      <RouteWrapper routes={router.children || []} />
+                      <Route component={MissWay} />
+                    </Switch>
+                  </Layout>
+                </Route>
+              </React.Fragment>
             )
           }
         </Switch>

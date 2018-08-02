@@ -8,7 +8,11 @@ const antdThemeVariables = lessToJs(fs.readFileSync(path.resolve(__dirname, '../
 const defaultLoaders = {
   'jsx?': ['babel-loader?cacheDirectory'],
   'jsx?.eslint': ['eslint-loader'],
-  'css.development': ['style-loader', 'css-loader', 'postcss-loader'],
+  'css.development': [
+    'style-loader',
+    'css-loader',
+    'postcss-loader'
+  ],
   'css.development.modules': [
     'style-loader',
     {
@@ -20,7 +24,10 @@ const defaultLoaders = {
     },
     'postcss-loader'
   ],
-  'css.production': ['css-loader?minimize', 'postcss-loader'],
+  'css.production': [
+    'css-loader?minimize',
+    'postcss-loader'
+  ],
   'css.production.modules': [
     {
       loader: 'css-loader',
